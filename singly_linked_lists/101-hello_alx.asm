@@ -3,21 +3,21 @@ global main
 
 	section .text
 main:
-	; Align stack to 16-byte boundary and preserve call framework
+	; Align stack to 16-byte boundary to fully stabilize standard C library calls
 	push    rbp
 	mov     rbp, rsp
 
-	; Set up parameters for printf call
-	mov     rdi, msg       ; 1st argument: address of the string
-	mov     rax, 0         ; 0 floating-point/vector arguments
-	call    printf         ; Transfer control to C library printf
+	; Load argument pointers for printf
+	mov     rdi, msg       ; 1st parameter: address of message string
+	mov     rax, 0         ; 0 floating-point/vector registers used
+	call    printf         ; Invoke printf
 
-	; Restore stack frames and exit cleanly back to OS environment
+	; Clean exit back to the calling process environment
 	mov     rsp, rbp
 	pop     rbp
-	mov     rax, 0         ; Return SUCCESS code 0
+	mov     rax, 0         ; Return status code 0 (SUCCESS)
 	ret
 
-	section .rodata
+	section .data
 msg:
-	db "Hello, ALX", 10, 0 ; 10 is line feed (\n), 0 is null terminator (\0)
+	db "Hello, ALX", 10, 0 ; Clean string bytes followed by LF (10) and NULL (0)
