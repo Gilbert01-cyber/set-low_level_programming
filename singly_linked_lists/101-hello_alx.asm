@@ -20,4 +20,4 @@ main:
 
 	section .data
 msg:
-	db "Hello, ALX", 10, 0 ; Hardcoded string, newline, and explicit null terminator
+	db "Hello,ALX", 10, 0  ; Notice: NO SPACE after the comma
