@@ -3,22 +3,21 @@ global main
 
 	section .text
 main:
-	; Align stack to 16-byte boundary to perfectly comply with standard C ABI
+	; Set up stack frame configuration
 	push    rbp
 	mov     rbp, rsp
 
-	; Load position-relative reference of the string format
+	; Load position-relative address of the exact string format
 	lea     rdi, [rel msg]
-	mov     rax, 0         ; 0 floating-point arguments passed
-	call    printf         ; Execute call
+	mov     rax, 0         ; 0 floating-point/vector registers
+	call    printf         ; Execute the C library call
 
-	; Tear down frame and exit safely back to operating system
+	; Clean stack frame breakdown
 	mov     rsp, rbp
 	pop     rbp
-	mov     rax, 0         ; Return status SUCCESS
+	mov     rax, 0         ; Return SUCCESS status 0
 	ret
 
 	section .rodata
-	align 8
 msg:
 	db "Hello, ALX", 10, 0
