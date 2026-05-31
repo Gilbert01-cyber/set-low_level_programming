@@ -32,7 +32,7 @@ int delete_nodeint_at_index(listint_t **head, unsigned int index)
 		temp = temp->next;
 	}
 
-	/* If index is out of bounds or target node doesn't exist */
+	/* Double check if temp or the target node itself is NULL (out of bounds) */
 	if (temp == NULL || temp->next == NULL)
 		return (-1);
 
