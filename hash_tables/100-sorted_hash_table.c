@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "hash_tables.h"
 
 /**
@@ -43,9 +46,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 
 	if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
 		return (0);
-
 	index = key_index((const unsigned char *)key, ht->size);
-
 	tmp = ht->array[index];
 	while (tmp)
 	{
@@ -53,11 +54,12 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		{
 			free(tmp->value);
 			tmp->value = strdup(value);
-			return (tmp->value != NULL ? 1 : 0);
+			if (tmp->value == NULL)
+				return (0);
+			return (1);
 		}
 		tmp = tmp->next;
 	}
-
 	node = malloc(sizeof(shash_node_t));
 	if (node == NULL)
 		return (0);
@@ -76,7 +78,6 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	}
 	node->next = ht->array[index];
 	ht->array[index] = node;
-
 	node->sprev = NULL;
 	node->snext = NULL;
 	if (ht->shead == NULL)
